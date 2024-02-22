@@ -1,0 +1,61 @@
+#components-layout-demo-custom-trigger .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.homeTemplate {
+  :where(.css-dev-only-do-not-override-dkbvqv).ant-layout .ant-layout-sider {
+    // position: fixed;
+    // top: 0;
+    // left: 0;
+    // height: 100vh;
+    min-height: 100vh;
+  }
+  main {
+    // margin-left: 15% !important;
+  }
+  .site-page-header-ghost-wrapper {
+    padding: 0;
+    margin: 0;
+    header {
+      width: 100%;
+      padding-left: 0;
+      background-color: #fff;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+  :where(
+      .css-dev-only-do-not-override-dkbvqv
+    ).ant-menu-dark.ant-menu-root.ant-menu-inline,
+  :where(.css-dev-only-do-not-override-dkbvqv).ant-menu-dark
+    > .ant-menu.ant-menu-root.ant-menu-inline,
+  :where(
+      .css-dev-only-do-not-override-dkbvqv
+    ).ant-menu-dark.ant-menu-root.ant-menu-vertical,
+  :where(.css-dev-only-do-not-override-dkbvqv).ant-menu-dark
+    > .ant-menu.ant-menu-root.ant-menu-vertical {
+    margin-top: 30px;
+  }
+  .logo {
+    display: none;
+  }
+}

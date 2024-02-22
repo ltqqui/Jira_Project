@@ -1,0 +1,67 @@
+.projectManagement{
+    height: 100%;
+    overflow-y: scroll;
+    h2{
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    :where(.css-dev-only-do-not-override-dkbvqv).ant-input-group-wrapper {
+      margin-bottom: 15px;
+    }
+     .ant-spin-nested-loading{
+      width: 1240px;
+    }
+    .ant-table-wrapper{
+      width: 1240px;
+      overflow-x: scroll;
+     }
+     .ant-popover-inner-content{
+      width: 100%;
+    }
+}
+.userTable{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #fff;
+  th{
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: #4CAF50;
+    color: #fff;
+  }
+  tbody{
+    td{
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    }
+    tr{
+      &:hover {
+        background-color: #f5f5f5;
+      }
+      button{
+        &:hover{
+          background-color:#f57b7b !important;
+        }
+      }
+    }
+  }
+}
+:where(.css-dev-only-do-not-override-dkbvqv).ant-select-single {
+  width: 100%;
+}
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 10px !important;
+    background-color: #fff !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #8b8b8b !important;
+    border-radius: 5px !important;
+  }

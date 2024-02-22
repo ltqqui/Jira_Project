@@ -1,0 +1,38 @@
+.createProject{
+
+    h2{
+        font-size: 25px;
+    }
+    .container{
+        padding: 20px 50px;
+        .projectName{
+            margin: 30px 0;
+            p{
+                margin: 0;
+                margin-bottom: 10px;
+            }
+        }
+        .description{
+            margin: 30px 0;
+            p{
+                margin: 0;
+                margin-bottom: 10px;
+            }
+        }
+        .category{
+            margin: 30px 0;
+            p{
+                margin: 0;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:600px) {
+    .createProject{
+        .container{
+            padding: 0;
+        }
+    }
+}

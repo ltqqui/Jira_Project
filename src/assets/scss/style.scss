@@ -1,0 +1,15 @@
+@import './base.scss';
+
+//template
+@import './template/UserTemplate.scss';
+@import './template/HomeTemplate.scss';
+
+//components
+@import './components/Loading.scss';
+@import "./components/ProjectEdit.scss";
+
+//page
+@import './page/LoginAndRegister.scss';
+@import './page/ProjectManagement.scss';    
+@import './page/CreateProject.scss';    
+@import './page/ProjectDetail.scss';
