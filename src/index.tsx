@@ -10,13 +10,14 @@ import  './assets/scss/style.scss'
 import ProjectManagement from './page/ProjectManagement/ProjectManagement';
 import HomeTemplate from './template/HomeTemplate/HomeTemplate';
 import UserTemplate from './template/UserTemplate/UserTemplate';
-import LoginAndRegister from './page/Login/LoginAndRegister';
+import LoginAndRegister from './page/LoginAndRegister/LoginAndRegister';
 import Loading from './components/Loading/Loading';
 import CreateProject from './page/CreateProject/CreateProject';
 
 import Test from './page/Test';
 import DrawerJira from './HOC/DrawerJira';
 import ProjectDetail from './page/ProjectDetail/ProjectDetail';
+import UserManagement from './page/UserMangement/UserManagement';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -27,13 +28,17 @@ root.render(
     <HistoryBrowser history={history}>
         <Routes>
         <Route path='' element={<HomeTemplate/>}>
+          <Route index element={<ProjectManagement/>}></Route>
           <Route path='projectManagement' element={<ProjectManagement/>}></Route>
           <Route path='createProject' element={<CreateProject/>}></Route>
-          <Route path='projectDetail' element={<ProjectDetail/>}></Route>
+          <Route path='projectDetail'>
+            <Route path=":id" element={<ProjectDetail/>}></Route>
+          </Route>
+          <Route path='userManagement' element={<UserManagement/>}></Route>
         </Route>
         <Route path='' element={<UserTemplate/>}>
-          <Route path='login' element={<LoginAndRegister/>}></Route>
           <Route path='register' element={<LoginAndRegister/>}></Route>
+          <Route path='login' element={<LoginAndRegister/>}></Route>
         </Route>
         </Routes>
     </HistoryBrowser>

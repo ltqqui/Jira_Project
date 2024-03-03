@@ -7,9 +7,11 @@
 //components
 @import './components/Loading.scss';
 @import "./components/ProjectEdit.scss";
+@import "./components/UserEdit.scss";
 
 //page
 @import './page/LoginAndRegister.scss';
 @import './page/ProjectManagement.scss';    
 @import './page/CreateProject.scss';    
 @import './page/ProjectDetail.scss';
+@import './page/userManagement.scss';

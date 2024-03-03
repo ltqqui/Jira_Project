@@ -12,6 +12,7 @@ import { NavLink, Outlet, useParams } from "react-router-dom";
 import { RootState } from "../../redux/configStore";
 import { ACCESS_TOKEN, USER_LOGIN } from "../../setting/config";
 import { history } from "../../utils/lib/lib";
+import Modal from "../../components/Modal/ModalTask";
 
 const { Header, Sider, Content } = Layout;
 
@@ -49,15 +50,18 @@ const HomeTemplate: React.FC = () => {
             }
           >
             <img
-              src="/img/logo/logo.png"
+              src="/img/logo/jira_icon.png"
               style={collapsed ? { width: "80%" } : { width: "30%" }}
+              onClick={()=>{
+                history.push("")
+              }}
               alt=""
             />
             <span
               style={
                 collapsed  ?
                  { display: "none"}
-                  : { color: "white", width: "50%", fontSize: "16px" }
+                  : { color: "white", width: "50%", fontSize: "17px", marginLeft:10 }
               }
             >
               Jira Software
@@ -76,7 +80,7 @@ const HomeTemplate: React.FC = () => {
                   {
                     key: "4",
                     label: (
-                      <p
+                      <p style={{margin:0}}
                         onClick={() => {
                           history.push("/createProject");
                         }}
@@ -85,11 +89,10 @@ const HomeTemplate: React.FC = () => {
                       </p>
                     ),
                   },
-                  { key: "5", label: "Create task" },
                   {
                     key: "6",
                     label: (
-                      <p
+                      <p style={{margin:0}}
                         onClick={() => {
                           history.push("/projectManagement");
                         }}
@@ -102,13 +105,16 @@ const HomeTemplate: React.FC = () => {
               },
               {
                 key: "2",
-                icon: <UserOutlined />,
-                label: "User",
-              },
-              {
-                key: "3",
-                icon: <UploadOutlined />,
-                label: "nav 3",
+                icon: <UserOutlined onClick={() => {
+                  history.push("/userManagement");
+                }} />,
+                label:  <p style={{margin:0}}
+                onClick={() => {
+                  history.push("/userManagement");
+                }}
+              >
+                User
+              </p>,
               },
             ]}
           />
@@ -132,18 +138,10 @@ const HomeTemplate: React.FC = () => {
                       onClick={() => {
                         localStorage.removeItem(USER_LOGIN);
                         localStorage.removeItem(ACCESS_TOKEN);
-                        let i = 1;
-                        const lopp = setInterval(() => {
-                          i++;
-                          if (i > 10) {
-                            clearInterval(lopp);
-
-                            window.location.reload();
-                          }
-                        }, 300);
+                        window.location.reload();
                       }}
                     >
-                      SignOUt
+                      Sign out
                     </Button>
                   </div>
                 </Header>
@@ -151,11 +149,15 @@ const HomeTemplate: React.FC = () => {
                 <Header>
                   <div></div>
                   <div>
-                    <Button key="3" type="primary">
-                      <NavLink to={"/login"}>SignIn</NavLink>
+                    <Button key="3" type="primary" onClick={()=>{
+                      history.push("/login")
+                    }}>
+                      Sign in
                     </Button>
-                    <Button key="2">
-                      <NavLink to={"/register"}>SingUp</NavLink>
+                    <Button key="2" style={{marginLeft:5}} onClick={()=>{
+                      history.push("/register")
+                    }}>
+                      Sign up
                     </Button>
                   </div>
                 </Header>

@@ -12,7 +12,8 @@ import { setLoading } from "./LoadingReducer";
 import { history } from "../../utils/lib/lib";
 import axios from "axios";
 import { openNotificationWithIcon } from "../../utils/lib/Nontification";
-import { getAllProjectApi } from "./ProjectReducer";
+import { getAllProjectApi, getUserApi } from "./ProjectReducer";
+import { RootState } from "../configStore";
 
 export type UserRegisterModel = {
   name: string;
@@ -34,12 +35,27 @@ export type UserLoginResult = {
   accessToken: string;
 };
 
+export type UserByProjectId={
+  userId:number;
+  name:string;
+  avatar:string;
+  email:string;
+  phoneNumber:string;
+}
 
+export type UserModel={
+  userId:number;
+  name:string;
+  avatar:string;
+  email:string;
+  phoneNumber:string;
+}
 
 export type UserState = {
   userRegister: UserRegisterModel | {};
   userLogin: UserLoginResult;
- 
+  arrUser:UserModel[];
+  userDetail:UserModel
 }
 
 const initialState: UserState = {
@@ -47,13 +63,21 @@ const initialState: UserState = {
   userLogin: settings.getStorageJson(USER_LOGIN)
   ? settings.getStorageJson(USER_LOGIN)
   : {},
-  
+  arrUser:[],
+  userDetail:{
+    userId:123,
+    name:'lam',
+    phoneNumber:'1234568',
+    avatar:'abc',
+    email:"lamt@gmail.com"
+  }
 }; 
 
 const UserReducer = createSlice({
   name: "UserReducer",
   initialState,
-  reducers: {},
+  reducers: {
+  },
   extraReducers:(builder) =>{
     builder.addCase(postUserLogin.fulfilled,(state:UserState, action:PayloadAction<UserLoginResult>)=>{
         state.userLogin=action.payload;
@@ -62,6 +86,12 @@ const UserReducer = createSlice({
         settings.setStorage(ACCESS_TOKEN, state.userLogin.accessToken);
         }
         console.log(action.payload)
+    })
+    builder.addCase(getAllUserApi.fulfilled,(state:UserState, action:PayloadAction<UserModel[]>)=>{
+      state.arrUser=action.payload;
+    })
+    builder.addCase(getUserDetailApi.fulfilled,(state:UserState, action:PayloadAction<UserModel>)=>{
+      state.userDetail=action.payload;
     })
   }
 });
@@ -103,7 +133,41 @@ export const postUserLogin = createAsyncThunk("UserReducer/testLogin",
   }
 );
 
+export const getAllUserApi= createAsyncThunk("UserReducer/getAllUserApi",
+  async(content:string,{dispatch})=>{
+    if(content===""){
+      dispatch(setLoading(true));
+      const {data, status}=await http.get("Users/getUser");
+      if(status===STATUS_CODE.SUCCESS){
+        dispatch(setLoading(false));
+      }
+      else dispatch(setLoading(false));
+      return data.content;
+    }
+    else{
+      const {data, status}=await http.get(`Users/getUser?keyword=${content}`);
+      return data.content;
+      
+    }
+  }
+)
 
+export const getUserDetailApi=createAsyncThunk("UserReducer/getUserDetailApi",
+  async(content:string)=>{
+    const{data, status}= await http.get(`Users/getUser?keyword=${content}`);
+    return data.content[0];
+  }
+)
+
+export const updateUserApi= createAsyncThunk("UserReducer/updateUserApi",
+  async(content:any,{dispatch})=>{
+    const{data, status}= await http.put("Users/editUser",content)
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getAllUserApi(""));
+      await openNotificationWithIcon("success", "Update success !");
+    }
+  }
+)
 
   
   

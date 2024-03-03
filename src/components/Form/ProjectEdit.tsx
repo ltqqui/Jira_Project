@@ -13,6 +13,7 @@ const { Option } = Select;
 const ProjectEdit:React.FC = (props: Props) => {
   const {projectCategory}= useSelector((state:RootState)=>state.ProjectCategoryReducer);
   const {projectDetail}= useSelector((state:RootState)=> state.ProjectReducer);
+  console.log(projectDetail)
   const dispatch:DispatchType =useDispatch();
   const frm= useFormik({
     enableReinitialize:true,

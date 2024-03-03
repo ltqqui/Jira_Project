@@ -17,15 +17,20 @@ const DrawerJira = (props: Props) => {
     setWidthScreen(window.innerWidth);
   };
   return (
-    <Drawer title={title} placement="right" width={window.innerWidth >=900 ? "40%" : window.innerWidth>=750 ? "60%" : "85%"  }  onClose={onClose} open={visible ? true : false}>
+    <Drawer title={title} placement="right" width={window.innerWidth >=900 ? "40%" : window.innerWidth>=750 ? "60%" : "85%"  }  onClose={onClose} open={visible ? true : false} footer={
+     <div  style={{textAlign:"right"}}>
+       <Space>
+        <Button onClick={onClose}>Cancel</Button>
+      <Button type="primary" onClick={callFunction}>
+        Submit
+      </Button>
+        </Space>
+     </div>
+      
+    }>
         {component}
         <div style={{textAlign:'right'}}>
-          <Space style={{position:'absolute', bottom:20, right:20}}>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="primary" onClick={callFunction}>
-            Submit
-          </Button>
-        </Space>
+          
         </div>
       </Drawer>
   )

@@ -58,4 +58,8 @@
   .logo {
     display: none;
   }
+  :where(.css-dev-only-do-not-override-dkbvqv).ant-layout.ant-layout-has-sider >.ant-layout, :where(.css-dev-only-do-not-override-dkbvqv).ant-layout.ant-layout-has-sider >.ant-layout-content {
+    width: 1240px !important;
+    overflow-x: scroll;
+}
 }

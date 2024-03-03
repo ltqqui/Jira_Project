@@ -5,6 +5,7 @@ import { openNotificationWithIcon } from "../../utils/lib/Nontification";
 import { set } from "lodash";
 import Axios from "axios"
 import axios from "axios";
+import { RootState } from "../configStore";
 
 export type ProjectListModel = {
   members: MemberModel[];
@@ -36,7 +37,7 @@ export type CreateProjectModel = {
 };
 
 export type ProjectDetailModel={
-  lstTask:         LstTask[];
+  lstTask:         LstTaskModel[];
   members:         Member[];
   creator:         Creator;
   id:              number;
@@ -50,16 +51,16 @@ export type Creator= {
   name: string;
 }
 
-export type LstTask ={
-  lstTaskDeTail: LstTaskDeTail[];
+export type LstTaskModel ={
+  lstTaskDeTail: TaskDeTailModel[];
   statusId:      string;
   statusName:    string;
   alias:         string;
 }
 
-export type LstTaskDeTail ={
+export type TaskDeTailModel ={
   priorityTask:          PriorityTask;
-  taskTypeDetail:        TaskTypeDetail;
+  taskTypeDetail:        TaskDeTailModel;
   assigness:             Assigness[];
   lstComment:            LstComment[];
   taskId:                number;
@@ -95,7 +96,7 @@ export type PriorityTask= {
   priority:   string;
 }
 
-export type TaskTypeDetail ={
+export type TaskTypeModel ={
   id:       number;
   taskType: string;
 }
@@ -123,17 +124,53 @@ export type ListUseModel={
   phoneNumber:string;
 }
 
+export type StatusModel={
+  statusId:string;
+  statusName:string;
+  alias: string;
+  deleted:boolean;
+}
+
+export type PriorityModel={
+  priorityId:number;
+  priority:string;
+  description:string;
+  deleted:boolean;
+  alias:string;
+}
+
+export type TaskCreateModel={
+  listUserAsign:number[];
+   taskName:              string;
+   description:           string;
+   statusId:              string;
+   originalEstimate:      number;
+   timeTrackingSpent:     number;
+   timeTrackingRemaining: number;
+   projectId:             number;
+   typeId:                number;
+   priorityId:            number;
+}
 
 export type ProjectState = {
   projectList: ProjectListModel[];
   projectDetail:ProjectDetailModel | null;
   listUser:ListUseModel[];
+  taskDetail:TaskDeTailModel |null;
+  taskType: TaskTypeModel[];
+  arrStatus:StatusModel[];
+  arrPriority:PriorityModel[];
 };
+
 
 const initialState: ProjectState = {
   projectList: [],
   projectDetail:null,
-  listUser:[]
+  listUser:[],
+  taskDetail:null,
+  taskType:[],
+  arrStatus:[],
+  arrPriority:[],
 }
 const ProjectReducer = createSlice({
   name: "ProjectReducer",
@@ -154,6 +191,18 @@ const ProjectReducer = createSlice({
     )
     builder.addCase(getUserApi.fulfilled,(state:ProjectState, action:PayloadAction<ListUseModel[]>)=>{
       state.listUser=action.payload;
+    })
+    builder.addCase(getTaskDetail.fulfilled,(state:ProjectState, action:PayloadAction<TaskDeTailModel>)=>{
+      state.taskDetail=action.payload;
+    })
+    builder.addCase(getTaskTypeApi.fulfilled, (state:ProjectState, action:PayloadAction<TaskTypeModel[]>)=>{
+      state.taskType= action.payload;
+    })
+    builder.addCase(getStatusApi.fulfilled,(state:ProjectState, action:PayloadAction<StatusModel[]>)=>{
+      state.arrStatus=action.payload;
+    })
+    builder.addCase(getPriorityApi.fulfilled,(state:ProjectState, action:PayloadAction<PriorityModel[]>)=>{
+      state.arrPriority= action.payload;
     })
   },
 });
@@ -241,13 +290,14 @@ export const updateProjectApi=createAsyncThunk("ProjectReducer/updateProjectApi"
   }
 )
 export const getUserApi= createAsyncThunk("UserReducer/getUserApi",
-async(key:string)=>{
+async(key:string, {dispatch})=>{
   if(key!==''){
     const {data, status}= await http.get(`Users/getUser?keyword=${key}`);
     return data.content;
   }
   else{
     const {data, status}= await http.get(`Users/getUser`);
+    
     return data.content;
   }
 }
@@ -279,5 +329,150 @@ export const removeUserProjectApi=createAsyncThunk("ProjectReducer/removeUserPro
   }
 )
 
+export const getTaskDetail= createAsyncThunk("ProjectReducer/getTaskDetail",
+  async(taskId:number)=>{
+      const{data, status}= await http.get(`Project/getTaskDetail?taskId=${taskId}`);
+      return data.content;
+  }
+)
+export const getTaskTypeApi= createAsyncThunk("ProjectReducer/getTaskTypeApi",
+  async()=>{
+    const {data, status}=await http.get(`TaskType/getAll`);
+    return data.content;
+  }
+)
+
+export const getStatusApi=createAsyncThunk("ProjectReducer/getStatusApi",
+  async()=>{
+    const {data,status}= await http.get('status/getAll');
+    return data.content;
+  }
+)
 
 
+
+export const getPriorityApi= createAsyncThunk("ProjectReducer/getPriorityApi",
+  async()=>{
+    const{data,status}= await http.get('Priority/getAll');
+    return data.content;
+  }
+)
+
+export const updateDscTask= createAsyncThunk("ProjectReducer/updateDscTask",
+  async(content:any,{dispatch})=>{
+    console.log(content)
+    const{data, status}= await http.put(`Project/updateDescription`, content);
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(content.taskId))
+    }
+  }
+)
+
+export const updateStatusApi=createAsyncThunk("ProjectReducer/updateStatusApi",
+  async(content:any,{dispatch})=>{
+    const{data, status}= await http.put(`Project/updateStatus`,content);
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(content.taskId));
+      dispatch(getProjectDetailApi(content.projectId))
+    }
+  }
+)
+
+export const updateStatusDnDApi=createAsyncThunk("ProjectReducer/updateStatusApi",
+async(content:any,{dispatch})=>{
+  dispatch(setLoading(true));
+  console.log(content)
+  const{data, status}= await http.put(`Project/updateStatus`,content);
+  console.log(data)
+  if(status===STATUS_CODE.SUCCESS){
+    await dispatch(getProjectDetailApi(content.projectId))
+    dispatch(setLoading(false));    
+  }
+  else {
+    dispatch(setLoading(false));
+  }
+}
+)
+
+export const removeUserFromTaskApi=createAsyncThunk("ProjectReducer/removeUserFromTaskApi",
+  async(content:any,{dispatch})=>{
+    const{data, status}= await http.post(`Project/removeUserFromTask`,content);
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(content.taskId));
+      dispatch(getProjectDetailApi(content.projectId))
+    }
+  }
+)
+
+export const assignUserTaskApi=createAsyncThunk("ProjectReducer/assignUserTaskApi",
+  async(content:any,{dispatch, getState})=>{
+    const state: RootState = getState() as RootState;
+    let taskDetail:any= {...state.ProjectReducer.taskDetail};
+    const {projectDetail}=state.ProjectReducer;
+    let listUserAsign:any[]=[...taskDetail.assigness,content]
+    console.log(listUserAsign)
+    listUserAsign= listUserAsign.map((user, index)=>{
+      return user.id ||user.userId;
+    })
+    const taskUpdate={...taskDetail, listUserAsign}
+    const{data,status}= await http.post(`Project/updateTask`,taskUpdate);
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(taskDetail.taskId));
+      dispatch(getProjectDetailApi(Number(projectDetail?.id))); 
+    }
+  }
+)
+
+export const updatePriorityApi=createAsyncThunk("ProjectReducer/updatePriorityApi",
+  async(content:any,{dispatch})=>{
+    const {data, status}= await http.put(`Project/updatePriority`,content );
+    if(status===STATUS_CODE.SUCCESS){
+        dispatch(getTaskDetail(content.taskId));
+    }
+  }
+)
+
+export const updateOriginalEstimateApi= createAsyncThunk("ProjectReducer/updateOriginalEstimate",
+  async(content:any,{getState, dispatch})=>{
+    const{data, status}= await http.put(`Project/updateEstimate`, content)
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(content.taskId))
+    }
+    console.log(data)
+  }
+) 
+
+export const updateTimeTrackingApi=createAsyncThunk("ProjectReducer/updateTimeTrackingApi",
+  async (content:any,{dispatch})=>{
+    const {data, status}= await http.put(`Project/updateTimeTracking`, content);
+    console.log(data)
+    if(status===STATUS_CODE.SUCCESS){
+      dispatch(getTaskDetail(content.taskId));
+    }
+  }
+) 
+
+export const createTaskApi= createAsyncThunk("ProjectReducer/createTaskApi",
+  async(task:TaskCreateModel, {dispatch})=>{
+    dispatch(setLoading(true))
+    const {data, status}= await http.post(`Project/createTask`,task );
+    if(status===STATUS_CODE.SUCCESS){
+      await dispatch(getProjectDetailApi(task.projectId))
+      await dispatch(setLoading(false));
+      await openNotificationWithIcon("success",'Create success !');
+    }
+    else dispatch(setLoading(false));
+  }
+)
+
+export const removeTaskApi=createAsyncThunk("ProjectReducer/removeTaskApi",
+  async(taskId:number, {dispatch,getState})=>{
+    const state:RootState= getState() as RootState;
+    const {projectDetail}= state.ProjectReducer
+    const {data, status}= await http.delete(`Project/removeTask?taskId=${taskId}`)
+    if(status===STATUS_CODE.SUCCESS){
+      await dispatch(getProjectDetailApi(Number(projectDetail?.id)))
+      openNotificationWithIcon("success","Deleted success !")
+    }
+  }
+)

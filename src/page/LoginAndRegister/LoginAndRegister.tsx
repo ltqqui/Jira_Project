@@ -7,8 +7,9 @@ import { UserLoginModel, UserRegisterModel, postUserLogin, postUserRegister } fr
 import { history } from '../../utils/lib/lib';
 type Props = {}
 
-const Login = (props: Props) => {
-  const [active,setActive]= useState<boolean>(true);
+const LoginAndRegister = (props: Props) => {  
+  const [active,setActive]= useState<boolean>(window.location.pathname==="/login" ? true : false);
+  console.log(window.location.pathname)
   const dispatch:DispatchType= useDispatch();
   const frmRegister= useFormik<UserRegisterModel>({
     initialValues:{
@@ -51,7 +52,6 @@ const Login = (props: Props) => {
                 <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-github"></i></a>
                 <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
             </div>
-            <span>or use your email for registeration</span>
             <input type="text" name='name' onChange={frmRegister.handleChange} placeholder="Name"/>
             <p className='error'>{frmRegister.errors.name!==''? frmRegister.errors.name : ''}</p>
             <input type="email" name='email' onChange={frmRegister.handleChange} placeholder="Email"/>
@@ -69,12 +69,11 @@ const Login = (props: Props) => {
         <form className='content'onSubmit={frmLogin.handleSubmit}>
             <h1>Sign In</h1>
             <div className="social-icons">
-                <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
+            <a href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
                 <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-facebook-f"></i></a>
                 <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-github"></i></a>
                 <a  href="abc" onClick={(e)=>{e.preventDefault()}} className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
             </div>
-            <span>or use your email password</span>
             <input type="text" name='email' onChange={frmLogin.handleChange} placeholder="Email"/>
             <input type="password" name='passWord' onChange={frmLogin.handleChange} placeholder="Password"/>
             <a href="#">Forget Your Password?</a> <br />
@@ -105,5 +104,5 @@ const Login = (props: Props) => {
   )
 }
 
-export default Login
+export default LoginAndRegister
 

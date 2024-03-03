@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react'
 import { MemberModel, assignUserProject, deleteProjectApi, getAllProjectApi, getProjectDetailApi, getUserApi, removeUserProjectApi } from '../../redux/reducer/ProjectReducer'
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,7 +51,7 @@ const ProjectManagement = (props: Props) => {
       title:'Project name',
       key:'projectName',
       render:(text, record, index)=>{
-        return <NavLink to={"/"} key={index}>{record.projectName}</NavLink>
+        return <NavLink to={`/projectDetail/${record.id}`} key={index}>{record.projectName}</NavLink>
       }
     },
     {
