@@ -57,7 +57,7 @@ const ProjectEdit:React.FC = (props: Props) => {
     </div>
     <div className="contentBottom">
     <Editor
-            apiKey="mqxr2os4qhejuo4m3hwy7ze5uegr1yixwfk0zu4j2kekhitj"
+             apiKey='mqxr2os4qhejuo4m3hwy7ze5uegr1yixwfk0zu4j2kekhitj'
             init={{
               plugins:
                 "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",

@@ -29,11 +29,6 @@ const CreateProject = (props: Props) => {
   const options= projectCategory.map((item,index)=>{
     return {value:item.id, label:item.projectCategoryName}
   })
-  // const log = () => {
-  //   if (editorRef.current) {
-  //     console.log(editorRef.current.getContent());
-  //   }
-  // };
   const handleEditorChange =(content:any, editor:any)=>{
     frm.setFieldValue('description',content)
   }
@@ -54,7 +49,7 @@ const CreateProject = (props: Props) => {
         <div className="description">
           <p>Description</p>
           <Editor 
-            apiKey="mqxr2os4qhejuo4m3hwy7ze5uegr1yixwfk0zu4j2kekhitj"
+            apiKey='mqxr2os4qhejuo4m3hwy7ze5uegr1yixwfk0zu4j2kekhitj'
             init={{
               plugins:
                 "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
