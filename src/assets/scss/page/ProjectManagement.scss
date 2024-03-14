@@ -51,6 +51,9 @@
       }
     }
   }
+  :where(.css-dkbvqv).ant-select-single {
+    width: 100%;
+  }
 }
 :where(.css-dev-only-do-not-override-dkbvqv).ant-select-single {
   width: 100%;
