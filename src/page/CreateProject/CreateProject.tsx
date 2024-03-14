@@ -48,8 +48,8 @@ const CreateProject = (props: Props) => {
         </div>
         <div className="description">
           <p>Description</p>
-          <Editor 
-            apiKey='j0jmc5l4nl1oyh6hql94orc0w6blrvaycjpbjf32gceem1o0'
+          {/* <Editor 
+            // apiKey='j0jmc5l4nl1oyh6hql94orc0w6blrvaycjpbjf32gceem1o0'
             init={{
               plugins:
                 "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
@@ -58,7 +58,23 @@ const CreateProject = (props: Props) => {
             }}
             initialValue="Welcome to TinyMCE!"
             onEditorChange={handleEditorChange}
-          />
+          /> */}
+           <Editor
+      apiKey='j0jmc5l4nl1oyh6hql94orc0w6blrvaycjpbjf32gceem1o0'
+      init={{
+        plugins:
+        "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount",
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [
+          { value: 'First.Name', title: 'First Name' },
+          { value: 'Email', title: 'Email' },
+        ],
+        ai_request: (request:any, respondWith:any) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+      }}
+      initialValue="Welcome to TinyMCE!"
+    />
         </div>
         <div className="category">
           <p>Category</p>
